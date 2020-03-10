@@ -1,0 +1,13 @@
+/SemanticRisadinha/build/
+/SemanticRisadinha/dist/
+/SemanticRisadinha/MyDataset/
+/SemanticRisadinha/MyDataset (backup)/
+/SemanticRisadinha/nbproject/
+/SemanticRisadinha/resumos/
+/SemanticRisadinha/test/
+/SemanticRisadinha/blogger.properties
+/SemanticRisadinha/risadinha.log
+/SemanticRisadinha/risadinhaDbpediaLinksAfter.log
+/SemanticRisadinha/risadinhaDbpediaLinksBefore.log
+/SemanticRisadinha/risadinhaDbpediaStatements.ttl
+/SemanticRisadinhaAppendix/
