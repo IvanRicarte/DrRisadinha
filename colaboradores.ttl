@@ -1,0 +1,105 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix doc:   <http://drrisadinha.org/> .
+
+doc:am
+    a   foaf:Person ;
+    foaf:name   "Abel Magalhães" ;
+    foaf:title  "Dr." .
+
+doc:aaf
+    a   foaf:Person ;
+    foaf:name   "Ângelo Alves Favaro" .
+
+doc:clm
+    a   foaf:Person ;
+    foaf:name   "Carolina Lima de Mello" .
+
+doc:cvar
+    a   foaf:Person ;
+    foaf:name   "Claudio Vinicius de Assis Rondado" .
+
+doc:ccd
+    a   foaf:Person ;
+    foaf:name   "Cristina Camargo Dalri" ;
+    foaf:title   "Enfa. Ms." .
+
+doc:fapv
+    a   foaf:Person ;
+    foaf:name   "Fábio Antônio Perecim Volpe" ;
+    foaf:title   "Dr." .
+
+doc:fc
+    a   foaf:Person ;
+    foaf:name   "Fabio Carmona" ;
+    foaf:title   "Prof. Dr." .
+
+doc:fps
+    a   foaf:Person ;
+    foaf:name   "Fernanda Priscila Sezefredo" .
+
+doc:gnc
+    a   foaf:Person ;
+    foaf:name   "Gabriella Neves Cury" .
+
+doc:gjmc
+    a   foaf:Person ;
+    foaf:name   "Gustavo José Miranda da Cunha" .
+
+doc:icsp
+    a   foaf:Person ;
+    foaf:name   "Iara Cristina da Silva Pedro" ;
+    foaf:title   "Enfa. Dra" .
+
+doc:if
+    a   foaf:Person ;
+    foaf:name   "Inalda Facincani" ;
+    foaf:title   "Profa. Dra" .
+
+doc:icat
+    a   foaf:Person ;
+    foaf:name   "Ivia Cristina Almeida Tiago" .
+
+doc:jntc
+    a   foaf:Person ;
+    foaf:name   "Jéssica Nara Targino Cavalcante" .
+
+doc:jcb
+    a   foaf:Person ;
+    foaf:name   "Josana Camilo Bodnar" .
+
+doc:loa
+    a   foaf:Person ;
+    foaf:name   "Larissa Oliveira Almeida" .
+
+doc:lms
+    a   foaf:Person ;
+    foaf:name   "Lenisa de Mello e Souza" .
+
+doc:mcja
+    a   foaf:Person ;
+    foaf:name   "Maira Carla de Jesus Antonio" .
+
+doc:mcbg
+    a   foaf:Person ;
+    foaf:name   "Maria Cristiane Barbosa Galvão" ;
+    foaf:title   "Profa. Dra." .
+
+doc:mcap
+    a   foaf:Person ;
+    foaf:name   "Marta Cristiane Alves Pereira" ;
+    foaf:title   "Profa. Dra." .
+
+doc:maa
+    a   foaf:Person ;
+    foaf:name   "Mateus Andrea Angelucci" ;
+    foaf:title   "Dr." .
+
+doc:nss
+    a   foaf:Person ;
+    foaf:name   "Nivaldo Sena da Silva" .
+
+doc:rs
+    a   foaf:Person ;
+    foaf:name   "Regina Sawamura" ;
+    foaf:title   "Profa. Dra." .
