@@ -189,7 +189,9 @@ public class ResumoHtmlContentParser {
         if (posRev > 0) {
             int start = texts.indexOf(":", posRev) + 1;
             if (start > 0) {
-                int end = texts.indexOf("Você achou");
+                int end = texts.indexOf("Você",start);
+                if (end == -1)
+                    end = texts.indexOf("Clique",start);
                 if (end > 0) {
                     return texts.substring(start, end).replace("&nbsp;", "").replace("<br>", "\n").
                             replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">");

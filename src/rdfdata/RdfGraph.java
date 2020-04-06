@@ -40,22 +40,24 @@ import org.apache.jena.vocabulary.DCTerms;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
 import org.apache.log4j.Logger;
+import risadinha.Referencia;
 import risadinha.RisadinhaPost;
 
 /**
  * Classe que representa um grafo RDF de publicações do blog.
- * 
+ *
  * @author karii
  * @author ricarte at ft.unicamp.br
  */
 public class RdfGraph {
+
     static Logger log = Logger.getLogger(RdfGraph.class);
 
     private final Model model;
     private Resource resourceBlog;
 
     /**
-     *  Inicializa namespaces e modelo default para o repositório.
+     * Inicializa namespaces e modelo default para o repositório.
      */
     public RdfGraph() {
         model = ModelFactory.createDefaultModel();
@@ -67,7 +69,7 @@ public class RdfGraph {
 
     /**
      * Inicializa dados do blog no grafo.
-     * 
+     *
      * @param blog Referência para o blog.
      * @return Modelo RDF criado.
      */
@@ -77,7 +79,7 @@ public class RdfGraph {
             addStatement(resourceBlog, RDF.type, model.createResource(Namespaces.NS_SIOC + "Forum"));
             addStatement(resourceBlog, DCTerms.identifier, model.createTypedLiteral(blog.getId()));
             addLiteral(resourceBlog, DCTerms.title, blog.getName());
-            addLiteral(resourceBlog, DCTerms.description, 
+            addLiteral(resourceBlog, DCTerms.description,
                     "Dados abertos derivados do blog Fale com o Dr. Risadinha");
             addLiteral(resourceBlog, DCTerms.modified, blog.getLastUpdated().toString());
             addLiteral(resourceBlog, DCTerms.issued, blog.getPublished().toString());
@@ -92,7 +94,7 @@ public class RdfGraph {
 
     /**
      * Adiciona uma publicação ao grafo RDF.
-     * 
+     *
      * @param post A publicação do blog Dr Risadinha a ser adicionada.
      * @param personsRdf Subgrafo com dados dos colaboradores do Projeto Dr Risadinha.
      * @return Modelo com a publicação adicionada.
@@ -134,12 +136,21 @@ public class RdfGraph {
             }
 
             Collection<String> referencias = post.getReferencia();
-            if (referencias.isEmpty()) {
-                log.warn("Sem referências: " + post.getTitle());
-            } else {
-                for (String reference : referencias) {
-                    model.add(model.createLiteralStatement(resourcePost, DCTerms.references, reference));
-                }
+            for (String reference : referencias) {
+                Referencia ref = new Referencia(reference);
+                Resource refRes = model.createResource();
+                model.add(model.createStatement(refRes, DCTerms.creator, ref.getSource()));
+                model.add(model.createStatement(refRes, DCTerms.description, ref.getDescription()));
+                String refUrl = ref.getUrl();
+                if (refUrl.length() > 0)
+                    model.add(model.createStatement(refRes, DCTerms.source, refUrl));
+                String refDate = ref.getUpdated();
+                if (refDate.length() > 0)
+                    model.add(model.createStatement(refRes, DCTerms.date, refDate));
+                String refAccessed = ref.getAccessed();
+                if (refAccessed.length() > 0)
+                    model.add(model.createStatement(refRes, DCTerms.available, refAccessed));
+                model.add(model.createStatement(resourcePost, DCTerms.references, refRes));
             }
 
             addSubject(resourcePost, post.getLabels());
@@ -197,10 +208,13 @@ public class RdfGraph {
         Resource resourceLabel;
         if (labels != null) {
             for (String label : labels) {
-                if (label.endsWith(".")) {
-                    label = label.substring(0, label.length() - 1);
-                }
-                resourceLabel = model.createResource(URIref.encode(label));
+                String subject = label.toLowerCase();
+                subject = StringUtils.deleteWhitespace(subject);
+                subject = StringUtils.stripAccents(subject);
+                subject = StringUtils.remove(subject, '.');
+                subject = StringUtils.remove(subject, '-');
+                resourceLabel = model.createResource(Namespaces.NS_RISADINHA
+                        + subject);
                 model.add(model.createStatement(resourcePost, DCTerms.subject, resourceLabel));
                 model.add(model.createLiteralStatement(resourceLabel, RDFS.label, label));
             }

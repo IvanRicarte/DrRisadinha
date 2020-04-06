@@ -60,6 +60,11 @@ doc:icat
     a   foaf:Person ;
     foaf:name   "Ivia Cristina Almeida Tiago" .
 
+doc:ilmr
+    a   foaf:Person;
+    foaf:name   "Ivan Luiz Marques Ricarte" ;
+    foaf:title  "Prof. Dr." .
+
 doc:jntc
     a   foaf:Person ;
     foaf:name   "Jéssica Nara Targino Cavalcante" .
