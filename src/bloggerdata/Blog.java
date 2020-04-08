@@ -44,7 +44,7 @@ import java.util.Properties;
  */
 public class Blog {
 
-    private final String base = "https://www.googleapis.com/blogger/v3/blogs/";
+    private final String base;
     private final String blogUrl;
     private final String key;
     private final Gson gson;
@@ -55,12 +55,15 @@ public class Blog {
      * propriedades do projeto.
      *
      * @param url Endereço URL do blog.
+     * @param base Endereço base para acesso à API blogger.
+     * @param key Chave de acesso a dados públicos do blog.
      * @throws MalformedURLException Endereço URL inválido.
      * @throws IOException Problema na transferência de dados do blog.
      */
-    public Blog(String url) throws MalformedURLException, IOException {
+    public Blog(String url, String base, String key) throws MalformedURLException, IOException {
+        this.base = base;
         blogUrl = url;
-        key = getKey();
+        this.key = key;
         gson = new Gson();
         header = gson.fromJson(new InputStreamReader(
                 new URL(base + "byurl?url=" + blogUrl + "&key=" + key).openStream()), BlogHeader.class);
@@ -78,7 +81,7 @@ public class Blog {
 
     /**
      * Lista com todas as publicações.
-     * 
+     *
      * @return Lista de Posts.
      * @throws MalformedURLException Problema na formação da URL para API Blogger.
      * @throws IOException Problema na transferência de dados.
@@ -95,6 +98,7 @@ public class Blog {
 
     /**
      * Obter uma publicação por identificador.
+     *
      * @param id O identificador da plublicação.
      * @return A publicação.
      * @throws MalformedURLException Problema na formação da URL para API Blogger.
@@ -107,14 +111,9 @@ public class Blog {
         return post;
     }
 
-    private static String getKey() throws IOException {
-        Properties blogProp = new Properties();
-        blogProp.load(new FileInputStream("risadinha.properties"));
-        return blogProp.getProperty("bloggerkey");
-    }
-
     /**
      * Obter nome do blog.
+     *
      * @return Nome do blog, de acordo com as suas propriedades.
      */
     public String getName() {
@@ -123,6 +122,7 @@ public class Blog {
 
     /**
      * Obter a quantidade total de publicações no blog.
+     *
      * @return Quantidade de publicações.
      */
     public int getNumberOfPosts() {
@@ -131,6 +131,7 @@ public class Blog {
 
     /**
      * Obter o registro de tempo da última atualização no blog.
+     *
      * @return Momento da última atualização.
      */
     public LocalDateTime getLastUpdated() {
@@ -139,14 +140,16 @@ public class Blog {
 
     /**
      * Obter URL do blog.
+     *
      * @return String com URL.
      */
     public String getUrl() {
         return header.getUrl();
     }
-    
+
     /**
      * Obter identificador do blog na plataforma Blogger.
+     *
      * @return Valor do identificador.
      */
     public long getId() {
@@ -155,14 +158,16 @@ public class Blog {
 
     /**
      * Registro da data de publicação do blog.
+     *
      * @return Data de publicação.
      */
     public LocalDateTime getPublished() {
         return header.getPublished();
     }
-    
+
     /**
      * Obter o self link.
+     *
      * @return String com Self link.
      */
     public String getSelfLink() {

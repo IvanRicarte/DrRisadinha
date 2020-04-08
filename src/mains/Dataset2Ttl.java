@@ -23,6 +23,9 @@
  */
 package mains;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import org.apache.log4j.Logger;
 import rdfdata.RdfRepository;
 
@@ -35,8 +38,14 @@ public class Dataset2Ttl {
 
     public static void main(String[] args) {
         log.info("============= Converting to TTL ==============");
-        RdfRepository dataset = new RdfRepository("MyDataset");
-        dataset.export("risadinha.ttl");
+        try {
+            Properties blogProp = new Properties();
+            blogProp.load(new FileInputStream("risadinha.properties"));
+            RdfRepository dataset = new RdfRepository(blogProp.getProperty("repositorydir"));
+            dataset.export(blogProp.getProperty("turtlefilename"));
+        } catch (IOException ex) {
+            log.error("Durante conversão para RDF", ex);
+        }
         log.info("============= Exported TTL ===============");
     }
 }

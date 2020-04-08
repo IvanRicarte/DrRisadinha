@@ -59,7 +59,7 @@ public class RdfRepository {
 
     /**
      * Cria um repositório RDF no diretório especificado, incorporando no 
-     * modelo default os dados dos colaboradores do Projeto Dr Risadinha.
+     * modelo default os dados pré-estabelecidos do Projeto Dr Risadinha.
      * 
      * @param dir Diretório de localização do repositório.
      */

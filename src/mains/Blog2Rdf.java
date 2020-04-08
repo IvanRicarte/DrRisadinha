@@ -24,8 +24,10 @@
 package mains;
 
 import bloggerdata.Blog;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.Properties;
 import org.apache.log4j.Logger;
 import rdfdata.RdfRepository;
 
@@ -41,18 +43,27 @@ public class Blog2Rdf {
 
     /**
      * Traduzir blog para RDF.
-     * @param args sem uso.
+     * @param args Nome do arquivo de propriedades para acesso ao blog via API Blogger.
      */
     public static void main(String[] args) {
         log.info("=========== Processo de tradução iniciado ============");
+        String propFile;
+        if (args.length < 1)
+            propFile = "risadinha.properties";
+        else
+            propFile = args[0];
         try {
-            Blog blog = new Blog("http://www.drrisadinha.org.br/");
+            Properties blogProp = new Properties();
+            blogProp.load(new FileInputStream(propFile));
+            Blog blog = new Blog(blogProp.getProperty("blogurl"), 
+                    blogProp.getProperty("bloggerapiurl"),
+                    blogProp.getProperty("bloggerkey"));
             int total = blog.getNumberOfPosts();
             log.info("Blog " + blog.getName() + " tem " + total
-                    + " artigos em "
+                    + " artigos publicados até "
                     + blog.getLastUpdated().format(DateTimeFormatter.ofPattern("ccc dd MMM yyyy HH:mm")));
 
-            RdfRepository tdb = new RdfRepository("MyDataset");
+            RdfRepository tdb = new RdfRepository(blogProp.getProperty("repositorydir"));
             tdb.create(blog);
         } catch (IOException ex) {
             log.error("Durante conversão para RDF", ex);

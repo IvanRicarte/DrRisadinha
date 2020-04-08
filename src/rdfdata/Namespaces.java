@@ -29,7 +29,7 @@ package rdfdata;
  * @author ricarte
  */
 public interface Namespaces {
-    String NS_RISADINHA = "http://drrisadinha.org/";
+    String NS_RISADINHA = "http://drrisadinha.org.br/";
     String NS_DC = "http://purl.org/dc/elements/1.1/";
     String NS_DCT = "http://purl.org/dc/terms/";
     String NS_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
