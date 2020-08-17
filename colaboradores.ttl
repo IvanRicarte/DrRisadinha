@@ -1,110 +1,110 @@
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
-@prefix doc:   <http://drrisadinha.org.br/> .
+@prefix ris:   <http://drrisadinha.org.br/> .
 
-doc:am
+ris:am
     a   foaf:Person ;
     foaf:name   "Abel Magalhães" ;
     foaf:title  "Dr." .
 
-doc:aaf
+ris:aaf
     a   foaf:Person ;
     foaf:name   "Ângelo Alves Favaro" .
 
-doc:clm
+ris:clm
     a   foaf:Person ;
     foaf:name   "Carolina Lima de Mello" .
 
-doc:cvar
+ris:cvar
     a   foaf:Person ;
     foaf:name   "Claudio Vinicius de Assis Rondado" .
 
-doc:ccd
+ris:ccd
     a   foaf:Person ;
     foaf:name   "Cristina Camargo Dalri" ;
     foaf:title   "Enfa. Ms." .
 
-doc:fapv
+ris:fapv
     a   foaf:Person ;
     foaf:name   "Fábio Antônio Perecim Volpe" ;
     foaf:title   "Dr." .
 
-doc:fc
+ris:fc
     a   foaf:Person ;
     foaf:name   "Fabio Carmona" ;
     foaf:title   "Prof. Dr." .
 
-doc:fps
+ris:fps
     a   foaf:Person ;
     foaf:name   "Fernanda Priscila Sezefredo" .
 
-doc:gnc
+ris:gnc
     a   foaf:Person ;
     foaf:name   "Gabriella Neves Cury" .
 
-doc:gjmc
+ris:gjmc
     a   foaf:Person ;
     foaf:name   "Gustavo José Miranda da Cunha" .
 
-doc:icsp
+ris:icsp
     a   foaf:Person ;
     foaf:name   "Iara Cristina da Silva Pedro" ;
     foaf:title   "Enfa. Dra" .
 
-doc:if
+ris:if
     a   foaf:Person ;
     foaf:name   "Inalda Facincani" ;
     foaf:title   "Profa. Dra" .
 
-doc:icat
+ris:icat
     a   foaf:Person ;
     foaf:name   "Ivia Cristina Almeida Tiago" .
 
-doc:ilmr
+ris:ilmr
     a   foaf:Person;
     foaf:name   "Ivan Luiz Marques Ricarte" ;
     foaf:title  "Prof. Dr." .
 
-doc:jntc
+ris:jntc
     a   foaf:Person ;
     foaf:name   "Jéssica Nara Targino Cavalcante" .
 
-doc:jcb
+ris:jcb
     a   foaf:Person ;
     foaf:name   "Josana Camilo Bodnar" .
 
-doc:loa
+ris:loa
     a   foaf:Person ;
     foaf:name   "Larissa Oliveira Almeida" .
 
-doc:lms
+ris:lms
     a   foaf:Person ;
     foaf:name   "Lenisa de Mello e Souza" .
 
-doc:mcja
+ris:mcja
     a   foaf:Person ;
     foaf:name   "Maira Carla de Jesus Antonio" .
 
-doc:mcbg
+ris:mcbg
     a   foaf:Person ;
     foaf:name   "Maria Cristiane Barbosa Galvão" ;
     foaf:title   "Profa. Dra." .
 
-doc:mcap
+ris:mcap
     a   foaf:Person ;
     foaf:name   "Marta Cristiane Alves Pereira" ;
     foaf:title   "Profa. Dra." .
 
-doc:maa
+ris:maa
     a   foaf:Person ;
     foaf:name   "Mateus Andrea Angelucci" ;
     foaf:title   "Dr." .
 
-doc:nss
+ris:nss
     a   foaf:Person ;
     foaf:name   "Nivaldo Sena da Silva" .
 
-doc:rs
+ris:rs
     a   foaf:Person ;
     foaf:name   "Regina Sawamura" ;
     foaf:title   "Profa. Dra." .

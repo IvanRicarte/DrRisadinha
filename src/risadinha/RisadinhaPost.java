@@ -28,7 +28,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Representa informação específica de publicações do Dr Risadinha do 
@@ -38,7 +39,7 @@ import org.apache.log4j.Logger;
  */
 public class RisadinhaPost {
 
-    static Logger log = Logger.getLogger(RisadinhaPost.class);
+    static Logger log = LogManager.getRootLogger();
     private final Post post;
     private String mensagemCurta;
     private String mensagem;

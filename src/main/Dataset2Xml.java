@@ -21,54 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mains;
+package main;
 
-import bloggerdata.Blog;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.Properties;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import rdfdata.RdfRepository;
 
 /**
- * Traduzir todas as publicações do blog para RDF e armazená-las no repositório local.
- * 
  * @author ricarte at ft.unicamp.br
- * @author Karina Hagiwara
  */
-public class Blog2Rdf {
+public class Dataset2Xml {
 
-    static Logger log = Logger.getLogger(Blog2Rdf.class);
+    static Logger log = LogManager.getRootLogger();
 
-    /**
-     * Traduzir blog para RDF.
-     * @param args Nome do arquivo de propriedades para acesso ao blog via API Blogger.
-     */
     public static void main(String[] args) {
-        log.info("=========== Processo de tradução iniciado ============");
-        String propFile;
-        if (args.length < 1)
-            propFile = "risadinha.properties";
-        else
-            propFile = args[0];
+        log.info("============= Converting to XML ==============");
         try {
             Properties blogProp = new Properties();
-            blogProp.load(new FileInputStream(propFile));
-            Blog blog = new Blog(blogProp.getProperty("blogurl"), 
-                    blogProp.getProperty("bloggerapiurl"),
-                    blogProp.getProperty("bloggerkey"));
-            int total = blog.getNumberOfPosts();
-            log.info("Blog " + blog.getName() + " tem " + total
-                    + " artigos publicados até "
-                    + blog.getLastUpdated().format(DateTimeFormatter.ofPattern("ccc dd MMM yyyy HH:mm")));
-
-            RdfRepository tdb = new RdfRepository(blogProp.getProperty("repositorydir"));
-            tdb.create(blog);
+            blogProp.load(new FileInputStream("risadinha.properties"));
+            RdfRepository dataset = new RdfRepository(blogProp.getProperty("repositorydir"));
+            String filename = blogProp.getProperty("xmlfilename");
+            long size = dataset.exportXml(filename);            
+            log.info("Exported " + size + " statements to " + filename);
         } catch (IOException ex) {
             log.error("Durante conversão para RDF", ex);
         }
-        log.info("=========== Tradução concluída =======================");
+        log.info("============= Exported XML ===============");
     }
-
 }

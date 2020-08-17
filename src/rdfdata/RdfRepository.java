@@ -43,7 +43,8 @@ import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 import org.apache.jena.tdb.TDBFactory;
 import org.apache.jena.vocabulary.DCTerms;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import risadinha.RisadinhaPost;
 
 /**
@@ -55,7 +56,7 @@ import risadinha.RisadinhaPost;
 public class RdfRepository {
 
     private final Dataset dataset;
-    static Logger log = Logger.getLogger(RdfRepository.class);
+    static Logger log = LogManager.getRootLogger();
 
     /**
      * Cria um repositório RDF no diretório especificado, incorporando no 
@@ -137,7 +138,7 @@ public class RdfRepository {
      * Exporta triplas RDF para um arquivo em formato Turtle.
      * @param filename Nome do arquivoa ser criado.
      */
-    public void export(String filename) {
+    public long exportTtl(String filename) {
         OutputStream out;
         try {
             out = new FileOutputStream(filename);
@@ -147,7 +148,28 @@ public class RdfRepository {
         }
         beginRead();
         RDFDataMgr.write(out, dataset.getDefaultModel(), RDFFormat.TURTLE_PRETTY);
+        long size = dataset.getDefaultModel().size();
         end();
+        return size;
+    }
+    
+     /**
+     * Exporta triplas RDF para um arquivo em formato XML.
+     * @param filename Nome do arquivoa ser criado.
+     */
+    public long exportXml(String filename) {
+        OutputStream out;
+        try {
+            out = new FileOutputStream(filename);
+        } catch (FileNotFoundException ex) {
+            log.warn("Exporting to " + filename, ex);
+            out = System.out;
+        }
+        beginRead();
+        RDFDataMgr.write(out, dataset.getDefaultModel(), RDFFormat.RDFXML);
+        long size = dataset.getDefaultModel().size();
+        end();
+        return size;
     }
 
     private List<String> queryList(String qs1, String str) {

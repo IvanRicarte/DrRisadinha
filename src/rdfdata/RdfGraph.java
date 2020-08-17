@@ -39,7 +39,8 @@ import org.apache.jena.util.URIref;
 import org.apache.jena.vocabulary.DCTerms;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import risadinha.Referencia;
 import risadinha.RisadinhaPost;
 
@@ -51,7 +52,7 @@ import risadinha.RisadinhaPost;
  */
 public class RdfGraph {
 
-    static Logger log = Logger.getLogger(RdfGraph.class);
+    static Logger log = LogManager.getRootLogger();
 
     private final Model model;
     private Resource resourceBlog;
@@ -61,10 +62,14 @@ public class RdfGraph {
      */
     public RdfGraph() {
         model = ModelFactory.createDefaultModel();
-        model.setNsPrefix("foaf", Namespaces.NS_FOAF);
-        model.setNsPrefix("doc", Namespaces.NS_RISADINHA);
-        model.setNsPrefix("sioc", Namespaces.NS_SIOC);
         model.setNsPrefix("dct", DCTerms.NS);
+        model.setNsPrefix("foaf", Namespaces.NS_FOAF);
+        model.setNsPrefix("sioc", Namespaces.NS_SIOC);
+        model.setNsPrefix("rdfs", Namespaces.NS_RDFS);
+        model.setNsPrefix("rdf", Namespaces.NS_RDF);
+        model.setNsPrefix("owl", Namespaces.NS_OWL);
+        model.setNsPrefix("ris", Namespaces.NS_RISADINHA);
+        model.setNsPrefix("dbp", Namespaces.NS_DBPEDIA);
     }
 
     /**
@@ -208,15 +213,15 @@ public class RdfGraph {
         Resource resourceLabel;
         if (labels != null) {
             for (String label : labels) {
-                String subject = label.toLowerCase();
+                String subject = label.toLowerCase().replaceAll("\u200b", "");
                 subject = StringUtils.deleteWhitespace(subject);
                 subject = StringUtils.stripAccents(subject);
-                subject = StringUtils.remove(subject, '.');
-                subject = StringUtils.remove(subject, '-');
+                subject = StringUtils.remove(subject, ".-");
                 resourceLabel = model.createResource(Namespaces.NS_RISADINHA
                         + subject);
                 model.add(model.createStatement(resourcePost, DCTerms.subject, resourceLabel));
                 model.add(model.createLiteralStatement(resourceLabel, RDFS.label, label));
+                log.info("\t Subject label: " + label);
             }
         }
     }

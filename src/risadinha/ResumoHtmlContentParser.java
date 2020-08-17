@@ -27,7 +27,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.StringTokenizer;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -41,7 +42,7 @@ import org.jsoup.safety.Whitelist;
  */
 public class ResumoHtmlContentParser {
 
-    static Logger log = Logger.getLogger(ResumoHtmlContentParser.class);
+    static Logger log = LogManager.getLogger(ResumoHtmlContentParser.class);
     private final Document soup;
     private final String source;
 
@@ -189,9 +190,11 @@ public class ResumoHtmlContentParser {
         if (posRev > 0) {
             int start = texts.indexOf(":", posRev) + 1;
             if (start > 0) {
-                int end = texts.indexOf("Você",start);
+                int end = texts.indexOf("Observação",start);
                 if (end == -1)
-                    end = texts.indexOf("Clique",start);
+                    end = texts.indexOf("Você", start);
+                    if (end == -1)
+                        end = texts.indexOf("Clique", start);
                 if (end > 0) {
                     return texts.substring(start, end).replace("&nbsp;", "").replace("<br>", "\n").
                             replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">");

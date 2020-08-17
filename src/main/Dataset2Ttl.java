@@ -21,12 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mains;
+package main;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import rdfdata.RdfRepository;
 
 /**
@@ -34,7 +35,7 @@ import rdfdata.RdfRepository;
  */
 public class Dataset2Ttl {
 
-    static Logger log = Logger.getLogger(Dataset2Ttl.class);
+    static Logger log = LogManager.getRootLogger();
 
     public static void main(String[] args) {
         log.info("============= Converting to TTL ==============");
@@ -42,7 +43,9 @@ public class Dataset2Ttl {
             Properties blogProp = new Properties();
             blogProp.load(new FileInputStream("risadinha.properties"));
             RdfRepository dataset = new RdfRepository(blogProp.getProperty("repositorydir"));
-            dataset.export(blogProp.getProperty("turtlefilename"));
+            String filename = blogProp.getProperty("turtlefilename");
+            long size = dataset.exportTtl(filename);            
+            log.info("Exported " + size + " statements to " + filename);
         } catch (IOException ex) {
             log.error("Durante conversão para RDF", ex);
         }

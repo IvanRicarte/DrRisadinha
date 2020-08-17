@@ -33,7 +33,9 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.sparql.engine.http.QueryEngineHTTP;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import static rdfdata.RdfService.log;
 
 /**
  * Classe utilitária para realização de consultas a repositórios externos
@@ -43,15 +45,16 @@ import org.apache.log4j.Logger;
  */
 public class RdfService {
 
-    static Logger log = Logger.getLogger(RdfService.class);
+    static Logger log = LogManager.getRootLogger();
 
     /**
      * Consulta à DBpedia por recursos relacionados ao marcador e que tenham
-     * como tipo (RDF.type) 'Disease' (http://dbpedia.org/ontology/Disease).
+     * como tipo (RDF.type) 'term' (http://dbpedia.org/ontology/ + term).
      * @param recursoSubject O marcador a ser buscado.
-     * @return Lista de recursos 'Disease' da DBpedia relacionados ao marcador passado.
+     * @param term  O termo pertencente à ontologia de DBpedia.
+     * @return Lista de recursos da DBpedia relacionados ao marcador passado.
      */
-    public static List<Resource> queryDBPediaDisease(String recursoSubject) {
+    public static List<Resource> queryDBPediaOntology(String recursoSubject, String term) {
 
         String serviceStr = "http://dbpedia.org/sparql";
 
@@ -60,7 +63,7 @@ public class RdfService {
                 + "PREFIX dbo: <http://dbpedia.org/ontology/>\r\n"
                 + "select distinct ?recursoSubject where {\n"
                 + "?recursoSubject owl:sameAs dbpedia-pt:" + recursoSubject + ".\n"
-                + "?recursoSubject a dbo:Disease .} LIMIT 50";
+                + "?recursoSubject a dbo:" + term +" .} LIMIT 5";
         Query query = QueryFactory.create(queryStr);
         List<Resource> resultados = new ArrayList<>();
 
@@ -107,4 +110,42 @@ public class RdfService {
         }
         return resultados;
     }    
+
+ /**
+     * Consulta à DBpedia por recursos relacionados ao marcador e que tenham
+     * como tipo (RDF.type) owl:Thing.
+     * @param recursoSubject O marcador a ser buscado.
+     * @return Lista de recursos da DBpedia relacionados ao marcador passado.
+     */
+    public static List<Resource> queryDBPediaThing(String recursoSubject) {
+
+        String serviceStr = "http://dbpedia.org/sparql";
+
+        String queryStr = "PREFIX dbpedia-pt: <http://pt.dbpedia.org/resource/>\r\n"
+                + "PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n"
+                + "PREFIX dbo: <http://dbpedia.org/ontology/>\r\n"
+                + "select distinct ?recursoSubject where {\n"
+                + "?recursoSubject owl:sameAs dbpedia-pt:" + recursoSubject + ".\n"
+                + "?recursoSubject a owl:Thing .} LIMIT 5";
+        Query query = QueryFactory.create(queryStr);
+        List<Resource> resultados = new ArrayList<>();
+
+        //Começa a execução remota
+        try (
+                QueryExecution qexec = QueryExecutionFactory.sparqlService(serviceStr, query)) {
+            //Coloca timeout do dbpedia
+            ((QueryEngineHTTP) qexec).addParam("timeout", "10000");
+
+            //Executa a query
+            ResultSet rs = qexec.execSelect();
+            //ResultSetFormatter.out(System.out, rs, query);
+            while (rs.hasNext()) {
+                resultados.add(rs.next().getResource("recursoSubject"));
+            }
+            qexec.close();
+        } catch (Exception ex) {
+            log.warn(recursoSubject, ex);
+        }
+        return resultados;
+    }
 }

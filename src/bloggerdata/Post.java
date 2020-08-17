@@ -29,12 +29,13 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 /**
- * Dados de uma publicação do blog. Os campos dos objetos desta classe são 
+ * Dados de uma publicação do blog. Os campos dos objetos desta classe são
  * preenchidos pela API Blogger.
  *
  * @author ricarte at ft.unicamp.br
  */
 public class Post {
+
     private String kind;
     private long id;
     private JsonElement blog;
@@ -48,8 +49,16 @@ public class Post {
     private JsonElement replies;
     private String[] labels;
 
+    private String cleanUtf(String source) {
+        String result = source.replaceAll("[\u2000-\u200f]", "");
+        result = result.replaceAll("[\u2010-\u2015]", "-");
+        result = result.replaceAll("[\u2016-\u201f]", "'");
+        return result;
+    }
+
     /**
      * Obter título da publicação.
+     *
      * @return O título da publicação.
      */
     public String getTitle() {
@@ -58,6 +67,7 @@ public class Post {
 
     /**
      * Obter identificador da publicação.
+     *
      * @return O identificador da publicação.
      */
     public long getId() {
@@ -66,6 +76,7 @@ public class Post {
 
     /**
      * Obter data da última atualização da publicação.
+     *
      * @return A data da atualização.
      */
     public LocalDateTime getUpdatedDate() {
@@ -74,6 +85,7 @@ public class Post {
 
     /**
      * Obter data original da publicação.
+     *
      * @return A data da publicação.
      */
     public LocalDateTime getPublishedDate() {
@@ -81,15 +93,18 @@ public class Post {
     }
 
     /**
-     * Obter o conteúdo da publicação.
+     * Obter o conteúdo da publicação, retirando (se necessário) os caracteres
+     * UTF-8 de espaço (\u2000 a \u200f) e hífen (\u2010 a \u2015).
+     *
      * @return String com o conteúdo completo da publicação.
      */
     public String getContent() {
-        return content;
+        return cleanUtf(content);
     }
 
     /**
      * Obter a representação do responsável pela publicação.
+     *
      * @return Objeto que representa usuário da plataforma blogger.
      */
     public PostPublisher getPublisher() {
@@ -98,14 +113,21 @@ public class Post {
 
     /**
      * Obter marcadores da publicação.
+     *
      * @return Arranjo com os marcadores.
      */
     public String[] getLabels() {
+        if (labels != null) {
+            for (String label : labels) {
+                label = cleanUtf(label);
+            }
+        }
         return labels;
     }
 
     /**
      * Obter URL da publicação.
+     *
      * @return String com URL da publicação.
      */
     public String getUrl() {

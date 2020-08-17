@@ -26,14 +26,12 @@ package bloggerdata;
 import bloggerdata.json.BlogHeader;
 import bloggerdata.json.AllPosts;
 import com.google.gson.Gson;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Provê acesso às informações do blog via API de blogger. O acesso às informações públicas do blog depende de uma

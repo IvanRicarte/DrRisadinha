@@ -36,5 +36,7 @@ public interface Namespaces {
     String NS_RDFS = "http://www.w3.org/2000/01/rdf-schema#";
     String NS_SIOC = "http://rdfs.org/sioc/ns#";
     String NS_FOAF = "http://xmlns.com/foaf/0.1/";
-    String NS_DCMI = "http://purl.org/dc/dcmitype/";   
+    String NS_DCMI = "http://purl.org/dc/dcmitype/"; 
+    String NS_OWL = "http://www.w3.org/2002/07/owl#";
+    String NS_DBPEDIA = "http://dbpedia.org/resource/";
 }
