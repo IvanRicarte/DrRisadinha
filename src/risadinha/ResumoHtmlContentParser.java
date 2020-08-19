@@ -35,19 +35,19 @@ import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
 
 /**
- * Extração dos elementos específicos do blog Dr Risadinha a partir do 'content'
- * não-estruturado de uma postagem.
+ * Extração dos elementos específicos do blog Dr Risadinha a partir do 'content' não-estruturado de uma postagem.
  *
  * @author ricarte at ft.unicamp.br
  */
 public class ResumoHtmlContentParser {
 
-    static Logger log = LogManager.getLogger(ResumoHtmlContentParser.class);
+    static Logger log = LogManager.getRootLogger();
     private final Document soup;
     private final String source;
 
     /**
      * Inicializar conteúdo para a extração de elementos.
+     *
      * @param html Fragmento de HTML a ser analisado.
      */
     public ResumoHtmlContentParser(String html) {
@@ -57,6 +57,7 @@ public class ResumoHtmlContentParser {
 
     /**
      * Obter URL da imagem representativa da publicação.
+     *
      * @return String com URL da imagem.
      */
     public String getUrlImagem() {
@@ -66,6 +67,7 @@ public class ResumoHtmlContentParser {
 
     /**
      * Obter a mensagem curta.
+     *
      * @return Mensagem curta.
      */
     public String getMensagemCurta() {
@@ -81,6 +83,7 @@ public class ResumoHtmlContentParser {
 
     /**
      * Obter a mensagem completa.
+     *
      * @return Mensagem completa.
      */
     public String getMensagem() {
@@ -108,6 +111,7 @@ public class ResumoHtmlContentParser {
 
     /**
      * Obter as referências.
+     *
      * @return Coleção de referências.
      */
     public Collection<String> getReferencia() {
@@ -116,6 +120,7 @@ public class ResumoHtmlContentParser {
 
     /**
      * Obter os autores.
+     *
      * @return Coleção de autores.
      */
     public Collection<String> getAutor() {
@@ -124,6 +129,7 @@ public class ResumoHtmlContentParser {
 
     /**
      * Obter os revisores.
+     *
      * @return Coleção de revisores.
      */
     public Collection<String> getRevisor() {
@@ -174,10 +180,10 @@ public class ResumoHtmlContentParser {
                     if (end > 0) {
                         return texts.substring(start, end).replace("&nbsp;", "").replace("<br>", "\n").
                                 replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">");
-                    }
-                    else 
+                    } else {
                         return texts.substring(start).replace("&nbsp;", "").replace("<br>", "\n").
                                 replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">");
+                    }
                 }
             }
         }
@@ -190,11 +196,13 @@ public class ResumoHtmlContentParser {
         if (posRev > 0) {
             int start = texts.indexOf(":", posRev) + 1;
             if (start > 0) {
-                int end = texts.indexOf("Observação",start);
-                if (end == -1)
+                int end = texts.indexOf("Observação", start);
+                if (end == -1) {
                     end = texts.indexOf("Você", start);
-                    if (end == -1)
+                    if (end == -1) {
                         end = texts.indexOf("Clique", start);
+                    }
+                }
                 if (end > 0) {
                     return texts.substring(start, end).replace("&nbsp;", "").replace("<br>", "\n").
                             replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">");

@@ -133,7 +133,7 @@ public class RdfGraph {
             // revisores
             Collection<String> revisores = post.getRevisores();
             if (revisores.isEmpty()) {
-                log.warn("Sem revisor identificado:" + post.getTitle());
+                log.warn("Sem revisor identificado: " + post.getTitle());
             } else {
                 for (String revisor : revisores) {
                     addPerson(resourcePost, DCTerms.contributor, revisor, personsRdf);
@@ -181,8 +181,11 @@ public class RdfGraph {
         Property name = personsRdf.getProperty(Namespaces.NS_FOAF, "name");
 
         ResIterator it = personsRdf.listSubjectsWithProperty(name, person);
+        Resource authorId;
         if (it.hasNext()) {
-            model.add(model.createStatement(resource, role, it.nextResource()));
+            authorId = it.nextResource();
+            model.add(model.createStatement(resource, role, authorId));
+            log.info(person + " associado a " + authorId.getLocalName());
         } else {
             int score = 0;
             int newscore;
@@ -198,13 +201,16 @@ public class RdfGraph {
             }
             if (score >= threshold) {
                 ResIterator it2 = personsRdf.listSubjectsWithProperty(name, best);
-                model.add(model.createStatement(resource, role, it2.nextResource()));
+                authorId = it2.nextResource();
+                model.add(model.createStatement(resource, role, authorId));
+                log.info(person + " associado a " + authorId.getLocalName());
             } else {
                 Resource newPerson = model.createResource(Namespaces.NS_RISADINHA
                         + URIref.encode(StringUtils.stripAccents(person)));
                 model.add(model.createStatement(newPerson, RDF.type, model.createResource(Namespaces.NS_FOAF + "Person")));
                 model.add(model.createStatement(newPerson, name, person));
                 model.add(model.createStatement(resource, role, newPerson));
+                log.info(person + " associado a novo recurso " + newPerson.getLocalName());
             }
         }
     }
@@ -221,7 +227,7 @@ public class RdfGraph {
                         + subject);
                 model.add(model.createStatement(resourcePost, DCTerms.subject, resourceLabel));
                 model.add(model.createLiteralStatement(resourceLabel, RDFS.label, label));
-                log.info("\t Subject label: " + label);
+//                log.info("\t Subject label: " + label);
             }
         }
     }
